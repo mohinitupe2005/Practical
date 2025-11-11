@@ -1,0 +1,52 @@
+#include <stdio.h>
+
+int main() {
+    int n, i, tq, time = 0;
+    int at[10], bt[10], rt[10];
+    float avgwt = 0, avgtt = 0;
+    
+    printf("Enter number of processes: ");
+    scanf("%d", &n);
+    
+    for (i = 0; i < n; i++) {
+        printf("Enter arrival time and burst time of P%d: ", i + 1);
+        scanf("%d %d", &at[i], &bt[i]);
+        rt[i] = bt[i];
+    }
+    
+    printf("Enter time quantum: ");
+    scanf("%d", &tq);
+    
+    int remain = n;
+    int flag = 0;
+    
+    printf("\nProcess\tTurnaround\tWaiting\n");
+    
+    while (remain != 0) {
+        flag = 0;//indicate cpu was busy
+        for (i = 0; i < n; i++) {
+            if (at[i] <= time && rt[i] > 0) {
+                if (rt[i] <= tq) {
+                    time += rt[i];
+                    rt[i] = 0;
+                    flag = 1;
+                    remain--;
+                    int tat = time - at[i];
+                    int wt = tat - bt[i];
+                    avgtt += tat;
+                    avgwt += wt;
+                    printf("P%d\t%d\t\t%d\n", i + 1, tat, wt);
+                } else {
+                    rt[i] -= tq;
+                    time += tq;
+                    flag = 1;
+                }
+            }
+        }
+        if (flag == 0) time++;
+    }
+    
+    printf("\nAverage Turnaround Time = %.2f", avgtt / n);
+    printf("\nAverage Waiting Time = %.2f\n", avgwt / n);
+    return 0;
+}

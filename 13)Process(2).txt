@@ -1,0 +1,112 @@
+
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <errno.h>
+#include <ctype.h>
+#include <string.h>
+
+#define FIFO1 "fifo_p1_to_p2"
+#define FIFO2 "fifo_p2_to_p1"
+#define OUTFILE "analysis.txt"
+#define INBUF 4096
+
+static void ensure_fifo(const char *path) {
+    if (mkfifo(path, 0666) == -1 && errno != EEXIST) {
+        perror("mkfifo");
+        exit(EXIT_FAILURE);
+    }
+}
+
+int main(void) {
+    ensure_fifo(FIFO1);
+    ensure_fifo(FIFO2);
+
+    int fdr = open(FIFO1, O_RDONLY);
+    if (fdr == -1) {
+        perror("open FIFO1 for read");
+        return EXIT_FAILURE;
+    }
+
+    long long chars = 0, words = 0, lines = 0;
+    int in_word = 0;
+    char buf[INBUF];
+    ssize_t r;
+
+    while ((r = read(fdr, buf, sizeof(buf))) > 0) {
+        for (ssize_t i = 0; i < r; i++) {
+            unsigned char c = (unsigned char)buf[i];
+            chars++;
+            if (c == '\n') lines++;
+            if (isspace(c)) {
+                in_word = 0;
+            } else if (!in_word) {
+                in_word = 1;
+                words++;
+            }
+        }
+    }
+    if (r == -1) {
+        perror("read from FIFO1");
+        close(fdr);
+        return EXIT_FAILURE;
+    }
+    close(fdr);
+
+    FILE *fp = fopen(OUTFILE, "w");
+    if (!fp) {
+        perror("fopen analysis.txt");
+        return EXIT_FAILURE;
+    }
+    fprintf(fp, "Analysis of input:\n");
+    fprintf(fp, "Characters : %lld\n", chars);
+    fprintf(fp, "Words      : %lld\n", words);
+    fprintf(fp, "Lines      : %lld\n", lines);
+    fclose(fp);
+
+
+    int fdw = open(FIFO2, O_WRONLY);
+    if (fdw == -1) {
+        perror("open FIFO2 for write");
+        return EXIT_FAILURE;
+    }
+
+    fp = fopen(OUTFILE, "r");
+    if (!fp) {
+        perror("fopen analysis.txt for read");
+        close(fdw);
+        return EXIT_FAILURE;
+    }
+
+    size_t n;
+    while ((n = fread(buf, 1, sizeof(buf), fp)) > 0) {
+        if (write(fdw, buf, n) == -1) {
+            perror("write to FIFO2");
+            fclose(fp);
+            close(fdw);
+            return EXIT_FAILURE;
+        }
+    }
+    fclose(fp);
+    close(fdw);
+
+
+    return 0;
+}
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+

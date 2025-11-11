@@ -1,0 +1,78 @@
+#include <stdio.h>
+#include <pthread.h>
+#include <semaphore.h>
+#include <unistd.h>
+
+int readcount = 0;     
+int data = 0;          
+
+sem_t wrt;             
+pthread_mutex_t mutex; 
+
+void* reader(void* arg)
+{
+    int id = ((int)arg);
+
+    for (int i = 1; i <= 5; i++)//reader will perform 5 times
+    {
+        pthread_mutex_lock(&mutex);
+        readcount++;
+        if (readcount == 1)
+            sem_wait(&wrt);  
+        pthread_mutex_unlock(&mutex);
+
+        printf("Reader %d reads data = %d\n", id, data);
+        sleep(1);
+
+        pthread_mutex_lock(&mutex);
+        readcount--;//reader leaving
+        if (readcount == 0)
+            sem_post(&wrt);
+        pthread_mutex_unlock(&mutex);
+
+        sleep(1);
+    }
+    return NULL;
+}
+
+void* writer(void* arg)
+{
+    int id = ((int)arg);
+
+    for (int i = 1; i <= 5; i++)
+    {
+        sem_wait(&wrt);  
+        data++;
+        printf("\tWriter %d modified data to %d\n", id, data);
+        sem_post(&wrt);   
+        sleep(1);
+    }
+    return NULL;
+}
+
+int main()
+{
+    pthread_t read_threads[5], write_threads[2];
+    int reader_id[5] = {1, 2, 3, 4, 5};
+    int writer_id[2] = {1, 2};
+
+    sem_init(&wrt, 0, 1);
+    pthread_mutex_init(&mutex, NULL);
+
+    pthread_create(&write_threads[0], NULL, writer, &writer_id[0]);
+    pthread_create(&write_threads[1], NULL, writer, &writer_id[1]);
+
+    for (int i = 0; i < 5; i++)
+        pthread_create(&read_threads[i], NULL, reader, &reader_id[i]);
+
+    for (int i = 0; i < 2; i++)
+        pthread_join(write_threads[i], NULL);
+    for (int i = 0; i < 5; i++)
+        pthread_join(read_threads[i], NULL);
+
+    sem_destroy(&wrt);
+    pthread_mutex_destroy(&mutex);
+
+    printf("All readers and writers finished\n");
+    return 0;
+}

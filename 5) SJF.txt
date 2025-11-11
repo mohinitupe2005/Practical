@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <limits.h>
+
+int main() {
+    int n, i, time = 0, smallest;
+    int at[10], bt[10], rt[10], ct[10];
+    float avgwt = 0, avgtt = 0;
+    
+    printf("Enter number of processes: ");
+    scanf("%d", &n);
+    
+    for (i = 0; i < n; i++) {
+        printf("Enter arrival time and burst time of P%d: ", i + 1);
+        scanf("%d %d", &at[i], &bt[i]);
+        rt[i] = bt[i];
+    }
+    
+    int remain = n;
+    printf("\nProcess\tCT\tTAT\tWT\n");
+    
+    for (time = 0; remain != 0; ) {
+        smallest = -1;
+        int min = INT_MAX;
+        
+        for (i = 0; i < n; i++) {
+            if (at[i] <= time && rt[i] > 0 && rt[i] < min) {
+                min = rt[i];
+                smallest = i;
+            }
+        }
+        
+        if (smallest == -1) {
+            time++;
+            continue;
+        }
+        
+        rt[smallest]--; 
+        time++;
+        
+        if (rt[smallest] == 0) {
+            remain--;
+            ct[smallest] = time;
+            int tat = ct[smallest] - at[smallest];
+            int wt = tat - bt[smallest];
+            avgtt += tat;
+            avgwt += wt;
+            printf("P%d\t%d\t%d\t%d\n", smallest + 1, ct[smallest], tat, wt);
+        }
+    }
+    
+    printf("\nAverage Turnaround Time = %.2f", avgtt / n);
+    printf("\nAverage Waiting Time = %.2f\n", avgwt / n);
+    return 0;
+}

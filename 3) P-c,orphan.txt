@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+static void selectionSort(int a[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        int min = i;
+        for (int j = i + 1; j < n; j++)
+            if (a[j] < a[min]) min = j;
+        if (min != i) {
+            int t = a[i]; a[i] = a[min]; a[min] = t;
+        }
+    }
+}
+
+static void bubbleSort(int a[], int n) {
+    for (int i = 0; i < n - 1; i++)
+        for (int j = 0; j < n - i - 1; j++)
+            if (a[j] > a[j + 1]) {
+                int t = a[j]; a[j] = a[j + 1]; a[j + 1] = t;
+            }
+}
+
+int main(void) {
+    int n;
+    printf("Enter number of elements: ");
+    if (scanf("%d", &n) != 1 || n <= 0) {
+        fprintf(stderr, "Invalid n.\n");
+        return 1;
+    }
+
+    int arr[n], arr2[n];
+    printf("Enter %d integers:\n", n);
+    for (int i = 0; i < n; i++) {
+        if (scanf("%d", &arr[i]) != 1) {
+            fprintf(stderr, "Bad input.\n");
+            return 1;
+        }
+        arr2[i] = arr[i];
+    }
+
+    pid_t pid = fork();
+    if (pid < 0) {
+        perror("fork");
+        return 1;
+    }
+
+    if (pid == 0) {
+        printf("\n--- CHILD PROCESS ---\n");
+        printf("Child PID = %d, Parent PID (before) = %d\n", getpid(), getppid());
+        printf("Child sleeping for 5 seconds so parent can exit...\n");
+        sleep(5);                                        
+        printf("After sleep: Child PID = %d, New Parent PID (after) = %d\n",
+               getpid(), getppid());                    
+
+        printf("\nChild sorting (Bubble Sort)...\n");
+        bubbleSort(arr2, n);
+        printf("Child Sorted Array: ");
+        for (int i = 0; i < n; i++) printf("%d ", arr2[i]);
+        printf("\n\n");
+        _exit(0);
+    } else {
+        printf("\n--- PARENT PROCESS ---\n");
+        printf("Parent PID = %d, Child PID = %d\n", getpid(), pid);
+
+        printf("\nParent sorting (Selection Sort)...\n");
+        selectionSort(arr, n);
+        printf("Parent Sorted Array: ");
+        for (int i = 0; i < n; i++) printf("%d ", arr[i]);
+        printf("\n");
+
+        printf("\nParent exiting NOW without wait() -> child becomes ORPHAN.\n\n");
+        _exit(0);                                       
+    }
+}

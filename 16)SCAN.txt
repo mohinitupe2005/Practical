@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int n, i, j, head, total_seek = 0, max_track;//max track means end of disk
+
+    printf("Enter the maximum track number on disk: ");
+    scanf("%d", &max_track);
+
+    printf("Enter number of disk requests: ");
+    scanf("%d", &n);
+
+    int request[n];
+    printf("Enter the disk request sequence: ");
+    for(i = 0; i < n; i++)
+        scanf("%d", &request[i]);
+
+    printf("Enter the initial head position: ");
+    scanf("%d", &head);
+
+    
+    for(i = 0; i < n-1; i++) {
+        for(j = i+1; j < n; j++) {
+            if(request[i] > request[j]) {
+                int temp = request[i];
+                request[i] = request[j];
+                request[j] = temp;
+            }
+        }
+    }
+
+    int index;//to find first request greater than current head position
+    for(i = 0; i < n; i++) {
+        if(request[i] > head) {
+            index = i;
+            break;
+        }
+    }
+
+    printf("\nDisk Head Movement Order (SCAN): %d", head);
+
+
+    for(i = index; i < n; i++) {
+        printf(" -> %d", request[i]);
+        total_seek += abs(request[i] - head);
+        head = request[i];//update the current head position
+    }
+
+    
+    if(head != max_track) {
+        total_seek += abs(max_track - head);
+        head = max_track;
+        printf(" -> %d", max_track);
+    }
+
+
+    for(i = index - 1; i >= 0; i--) {
+        printf(" -> %d", request[i]);
+        total_seek += abs(head - request[i]);
+        head = request[i];
+    }
+
+    printf("\nTotal Seek Time = %d", total_seek);
+    printf("\nAverage Seek Time = %.2f\n", (float)total_seek / n);
+
+    return 0;
+}

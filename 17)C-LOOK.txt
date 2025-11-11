@@ -1,0 +1,67 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main() {
+    int n, i, j, head, total_seek = 0;
+
+    printf("Enter number of disk requests: ");
+    scanf("%d", &n);
+
+    int request[n];
+    printf("Enter the disk request sequence: ");
+    for(i = 0; i < n; i++)
+        scanf("%d", &request[i]);
+
+    printf("Enter the initial head position: ");
+    scanf("%d", &head);
+
+   
+    for(i = 0; i < n - 1; i++) {
+        for(j = i + 1; j < n; j++) {
+            if(request[i] > request[j]) {
+                int temp = request[i];
+                request[i] = request[j];
+                request[j] = temp;
+            }
+        }
+    }
+
+    
+    int index = -1;
+    for(i = 0; i < n; i++) {
+        if(request[i] > head) {
+            index = i;
+            break;
+        }
+    }
+
+    printf("\nDisk Head Movement Order (C-LOOK): %d", head);
+
+   
+    for(i = index; i < n; i++) {
+        printf(" -> %d", request[i]);
+        total_seek += abs(request[i] - head);
+        head = request[i];
+    }
+
+   
+    if(index != 0) {
+        total_seek += abs(head - request[0]); // jump
+        head = request[0];
+        printf(" -> %d", request[0]);
+    }
+
+    
+    for(i = 1; i < index; i++) {
+        printf(" -> %d", request[i]);
+        total_seek += abs(request[i] - head);
+        head = request[i];
+    }
+
+    printf("\nTotal Seek Time = %d", total_seek);
+    printf("\nAverage Seek Time = %.2f\n", (float)total_seek / n);
+
+    return 0;
+}
+
+
