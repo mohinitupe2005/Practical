@@ -1,0 +1,46 @@
+20. Create Instructor collection and execute following queries
+a. Find out details of instructors having salary >40000 and < 80000
+b. Display the details of instructors who are living in Maharashtra
+c. Find out details of instructors working in AIML department
+d. Find instructor id along with department and salary where department
+has substring o.
+
+
+Step 1: Create / Select Database
+use CollegeDB
+
+🧱 Step 2: Create Collection
+db.createCollection("Instructors")
+
+👨‍🏫 Step 3: Insert Sample Data (One by One)
+db.Instructors.insertOne({inst_id: 1, name: "Omkar", dept: "IT", salary: 45000, city: "Pune", state: "Maharashtra"})
+
+db.Instructors.insertOne({inst_id: 2, name: "Saurabh", dept: "AIML", salary: 70000, city: "Mumbai", state: "Maharashtra"})
+
+db.Instructors.insertOne({inst_id: 3, name: "Sneha", dept: "Computer", salary: 82000, city: "Delhi", state: "Delhi"})
+
+db.Instructors.insertOne({inst_id: 4, name: "Rohan", dept: "Mechanical", salary: 38000, city: "Nagpur", state: "Maharashtra"})
+
+db.Instructors.insertOne({inst_id: 5, name: "Sakshi", dept: "Civil", salary: 50000, city: "Indore", state: "Madhya Pradesh"})
+
+🔍 Step 4: Execute Queries
+a️⃣ Find details of instructors having salary > 40000 and < 80000
+db.Instructors.find({salary: {$gt: 40000, $lt: 80000}})
+
+
+✅ Explanation: $gt = greater than, $lt = less than — both conditions must be true.
+
+b️⃣ Display details of instructors who are living in Maharashtra
+db.Instructors.find({state: "Maharashtra"})
+
+
+✅ Explanation: Finds instructors where state field exactly matches “Maharashtra.”
+
+c️⃣ Find details of instructors working in AIML department
+db.Instructors.find({dept: "AIML"})
+
+
+✅ Explanation: Simple equality query on the dept field.
+
+d️⃣ Find instructor ID, department, and salary where department contains substring “o”
+db.Instructors.find({dept: /o/i}, {inst_id: 1, dept: 1, salary: 1, _id: 0})

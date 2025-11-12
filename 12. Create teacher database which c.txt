@@ -1,0 +1,53 @@
+12. Create teacher database which contains the information of teacherid, name,
+department, salary and status of teacher (Approved/not approved). Design and
+implement any ten queries using mongodb.
+
+Step 1: Create / Select Database
+use TeacherDB
+
+🧱 Step 2: Create Collection
+db.createCollection("Teachers")
+
+👩‍🏫 Step 3: Insert Sample Data (One by One)
+db.Teachers.insertOne({teacher_id: 1, name: "Omkar", dept: "IT", salary: 28000, status: "approved"})
+
+db.Teachers.insertOne({teacher_id: 2, name: "Sakshi", dept: "IT", salary: 55000, status: "approved"})
+
+db.Teachers.insertOne({teacher_id: 3, name: "Rohan", dept: "CSE", salary: 48000, status: "approved"})
+
+db.Teachers.insertOne({teacher_id: 4, name: "Sneha", dept: "ENTC", salary: 60000, status: "not approved"})
+
+db.Teachers.insertOne({teacher_id: 5, name: "Pooja", dept: "IT", salary: 25000, status: "approved"})
+
+db.Teachers.insertOne({teacher_id: 6, name: "Saurabh", dept: "CSE", salary: 52000, status: "approved"})
+
+🔍 Step 4: Execute 10 MongoDB Queries
+1️⃣ Display all teachers
+db.Teachers.find()
+
+2️⃣ Find all teachers from IT department
+db.Teachers.find({dept: "IT"})
+
+3️⃣ Find teachers with salary greater than ₹50,000
+db.Teachers.find({salary: {$gt: 50000}})
+
+4️⃣ Find teachers whose status is “approved”
+db.Teachers.find({status: "approved"})
+
+5️⃣ Display teachers in descending order of salary
+db.Teachers.find().sort({salary: -1})
+
+6️⃣ Remove teachers whose status is “not approved”
+db.Teachers.deleteMany({status: "not approved"})
+
+7️⃣ Increase salary by ₹10,000 for teachers having salary less than ₹30,000
+db.Teachers.updateMany({salary: {$lt: 30000}}, {$inc: {salary: 10000}})
+
+8️⃣ Find the teacher with the highest salary
+db.Teachers.find().sort({salary: -1}).limit(1)
+
+9️⃣ Count total number of approved teachers
+db.Teachers.countDocuments({status: "approved"})
+
+🔟 Find teachers whose names start with “S”
+db.Teachers.find({name: /^S/})

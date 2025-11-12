@@ -1,0 +1,37 @@
+17. Create Instructor collection and execute following queries
+a. Find Instructor with id 1,2,3
+b. Find details of instructor except 1,2,3
+c. Find instructor whose salary is neither < 50000 nor department is
+computer
+d. Display details of instructor dept has substring e
+
+
+Step 1: Create / Select Database
+use CollegeDB
+
+🧱 Step 2: Create Collection
+db.createCollection("Instructors")
+
+👨‍🏫 Step 3: Insert Sample Data (One by One)
+db.Instructors.insertOne({inst_id: 1, name: "Omkar", dept: "IT", salary: 45000})
+
+db.Instructors.insertOne({inst_id: 2, name: "Saurabh", dept: "Computer", salary: 52000})
+
+db.Instructors.insertOne({inst_id: 3, name: "Sneha", dept: "ENTC", salary: 48000})
+
+db.Instructors.insertOne({inst_id: 4, name: "Rohan", dept: "Mechanical", salary: 60000})
+
+db.Instructors.insertOne({inst_id: 5, name: "Sakshi", dept: "Civil", salary: 40000})
+
+🔍 Step 4: Execute Queries
+a️⃣ Find Instructors with ID 1, 2, and 3
+db.Instructors.find({inst_id: {$in: [1, 2, 3]}})
+
+b️⃣ Find details of instructors except ID 1, 2, and 3
+db.Instructors.find({inst_id: {$nin: [1, 2, 3]}})
+
+c️⃣ Find instructors whose salary is neither < 50000 nor department is "Computer"
+db.Instructors.find({$nor: [{salary: {$lt: 50000}}, {dept: "Computer"}]})
+
+d️⃣ Display details of instructors whose department name contains substring “e”
+db.Instructors.find({dept: /e/i})

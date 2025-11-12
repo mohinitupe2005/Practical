@@ -1,0 +1,37 @@
+3. Implement aggregation and indexing with suitable example using MongoDB.
+
+use CollegeDB
+🧱 Step 2: Create and Insert Sample Data
+js
+Copy code
+db.Student.insertMany([{roll_no: 1, name: "Omkar", course: "ADBMS", marks: 85}, {roll_no: 2, name: "Sakshi", course: "ADBMS", marks: 90}, {roll_no: 3, name: "Rohan", course: "CN", marks: 70}, {roll_no: 4, name: "Sneha", course: "CN", marks: 80}, {roll_no: 5, name: "Saurabh", course: "AI", marks: 95}])
+
+⚙️ Step 3: Aggregation Examples
+🔹 1) Find average marks of students in each course
+
+db.Student.aggregate([{$group: {_id: "$course", avg_marks: {$avg: "$marks"}}}])
+
+🔹 2) Count number of students per course
+js
+Copy code
+db.Student.aggregate([{$group: {_id: "$course", total_students: {$sum: 1}}}])
+🔹 3) Find highest marks in each course
+js
+Copy code
+db.Student.aggregate([{$group: {_id: "$course", max_marks: {$max: "$marks"}}}])
+⚡ Step 4: Indexing Examples
+🔹 Create an index on student name
+js
+Copy code
+db.Student.createIndex({name: 1})
+🔹 Create an index on course
+
+db.Student.createIndex({course: 1})
+🔹 View created indexes
+js
+Copy code
+db.Student.getIndexes()
+🔍 Step 5: Query Using Index
+js
+Copy code
+db.Student.find({name: "Omkar"})

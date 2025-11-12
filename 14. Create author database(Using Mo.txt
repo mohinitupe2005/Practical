@@ -1,0 +1,33 @@
+ 14. Create author database(Using Mongodb)-Using author_id, title, name,
+description, url,likes.  To display a list stating how many tutorials are written by each user  To display author names where the author field equals “Kahate”
+ To display all author names in ascending & descending order
+
+Step 1: Create / Select Database
+use AuthorDB
+
+🧱 Step 2: Create Collection
+db.createCollection("authors")
+
+✍️ Step 3: Insert Sample Data (One by One)
+db.authors.insertOne({author_id: 1, title: "MongoDB Basics", name: "Kahate", description: "Introduction to MongoDB", url: "www.mongodb.com", likes: 120})
+
+db.authors.insertOne({author_id: 2, title: "Advanced SQL", name: "Omkar", description: "Advanced SQL concepts", url: "www.sqltutorial.com", likes: 90})
+
+db.authors.insertOne({author_id: 3, title: "Data Science 101", name: "Kahate", description: "Basics of Data Science", url: "www.datasci.com", likes: 150})
+
+db.authors.insertOne({author_id: 4, title: "Web Development", name: "Sakshi", description: "Frontend and backend guide", url: "www.webdev.com", likes: 110})
+
+db.authors.insertOne({author_id: 5, title: "Python for AI", name: "Rohan", description: "Python in artificial intelligence", url: "www.pythonai.com", likes: 180})
+
+🔍 Step 4: Execute Queries
+1️⃣ Display how many tutorials are written by each author
+db.authors.aggregate([{$group: {_id: "$name", total_tutorials: {$sum: 1}}}])
+
+2️⃣ Display author names where the author field equals “Kahate”
+db.authors.find({name: "Kahate"}, {name: 1, title: 1, _id: 0})
+
+3️⃣ Display all author names in ascending order
+db.authors.find({}, {name: 1, _id: 0}).sort({name: 1})
+
+4️⃣ Display all author names in descending order
+db.authors.find({}, {name: 1, _id: 0}).sort({name: -1})

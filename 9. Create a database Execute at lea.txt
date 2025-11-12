@@ -1,0 +1,49 @@
+9. Create a database Execute at least 10 queries on any suitable MongoDB
+database that demonstrates following querying techniques:
+a. find and findOne (specific values)
+b. Query criteria (Query conditionals, OR queries, $not, Conditional
+semantics)
+c. Type-specific queries (Null, Regular expression, Querying arrays)
+
+Step 1: Create / Select Database
+use StudentDB
+
+🧱 Step 2: Create Collection and Insert Sample Data
+db.Students.insertMany([
+  {roll_no: 1, name: "Omkar", dept: "IT", marks: 85, hobbies: ["Cricket", "Coding"], city: "Pune"},
+  {roll_no: 2, name: "Sakshi", dept: "CSE", marks: 92, hobbies: ["Reading"], city: "Mumbai"},
+  {roll_no: 3, name: "Rohan", dept: "IT", marks: 55, hobbies: ["Music", "Gaming"], city: "Solapur"},
+  {roll_no: 4, name: "Sneha", dept: "ENTC", marks: 60, hobbies: ["Dancing"], city: "Pune"},
+  {roll_no: 5, name: "Saurabh", dept: "CSE", marks: null, hobbies: ["Coding"], city: "Nashik"}
+])
+
+🔍 Step 3: Execute 10 Queries
+1️⃣ find() – Display all students
+db.Students.find()
+
+2️⃣ findOne() – Display one record from IT department
+db.Students.findOne({dept: "IT"})
+
+3️⃣ Query Criteria – Students with marks greater than 80
+db.Students.find({marks: {$gt: 80}})
+
+4️⃣ Query Criteria – Students with marks between 60 and 90
+db.Students.find({marks: {$gte: 60, $lte: 90}})
+
+5️⃣ OR Query – Students from IT or CSE departments
+db.Students.find({$or: [{dept: "IT"}, {dept: "CSE"}]})
+
+6️⃣ $not Operator – Students not from Pune
+db.Students.find({city: {$not: {$eq: "Pune"}}})
+
+7️⃣ Type-Specific (Null) – Students with no marks entered
+db.Students.find({marks: {$eq: null}})
+
+8️⃣ Regular Expression – Students whose name starts with “S”
+db.Students.find({name: /^S/})
+
+9️⃣ Querying Arrays – Students who have "Coding" as a hobby
+db.Students.find({hobbies: "Coding"})
+
+🔟 Querying Arrays – Students having two hobbies
+db.Students.find({hobbies: {$size: 2}})

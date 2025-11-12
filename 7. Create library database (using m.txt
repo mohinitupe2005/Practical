@@ -1,0 +1,37 @@
+7. Create library database (using mongodb)  List the books of management subjects.
+
+ List the books whose publication is “Pearson”
+ List the number of journals.  List the number of books which price is less than rs.500.  Find the total investment for IT dept (IT books).
+
+Step 1: Select / Create Database
+use LibraryDB
+
+🧱 Step 2: Create Collection
+db.createCollection("Books")
+
+📚 Step 3: Insert Sample Data (One by One)
+db.Books.insertOne({book_id: 1, title: "Management Basics", subject: "Management", publication: "Pearson", price: 450, type: "Book", dept: "MBA"})
+
+db.Books.insertOne({book_id: 2, title: "Advanced IT Systems", subject: "IT", publication: "McGraw Hill", price: 800, type: "Book", dept: "IT"})
+
+db.Books.insertOne({book_id: 3, title: "Business Strategy", subject: "Management", publication: "Oxford", price: 600, type: "Book", dept: "MBA"})
+
+db.Books.insertOne({book_id: 4, title: "Journal of Data Science", subject: "IT", publication: "Pearson", price: 300, type: "Journal", dept: "IT"})
+
+db.Books.insertOne({book_id: 5, title: "Software Engineering", subject: "IT", publication: "Pearson", price: 700, type: "Book", dept: "IT"})
+
+🔍 Queries
+1️⃣ List the books of Management subjects
+db.Books.find({subject: "Management"})
+
+2️⃣ List the books whose publication is "Pearson"
+db.Books.find({publication: "Pearson"})
+
+3️⃣ List the number of journals
+db.Books.countDocuments({type: "Journal"})
+
+4️⃣ List the number of books whose price is less than ₹500
+db.Books.countDocuments({price: {$lt: 500}})
+
+5️⃣ Find the total investment for IT department (IT books)
+db.Books.aggregate([{$match: {dept: "IT"}}, {$group: {_id: null, total_investment: {$sum: "$price"}}}])

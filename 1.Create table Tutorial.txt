@@ -1,0 +1,50 @@
+ 1.Create table Tutorial(tutorial_id,tut_title,author,submission_date) using
+MongoDB
+Implement following operation on above table
+1)Insert
+2)Update
+3)Delete
+4)Display all the tutorial details
+5)Find specific tutorial_id and author of respective tutorial.
+6)Display all the records of tutorial where author name starts with”Sa”
+7)Display all tutorials in Ascending and Descending order according to
+tutorial_id or author name.
+
+db.createCollection("Tutorial")
+db.Tutorial.insertOne({tutorial_id: 1, tut_title: "Intro to MongoDB", author: "Sahil Kumar", submission_date: "2025-11-08"})
+db.Tutorial.insertMany([{tutorial_id: 2, tut_title: "Node Basics", author: "Samiksha Patil", submission_date: "2025-11-07"},
+ {tutorial_id: 3, tut_title: "Python Guide", author: "Saurabh Deshmukh", submission_date: "2025-11-06"}])
+
+Update
+db.Tutorial.updateOne({tutorial_id: 1}, {$set: {author: "Sahil Sharma"}})
+
+4) Delete
+db.Tutorial.deleteOne({tutorial_id: 2})
+
+5) Display all tutorial details
+db.Tutorial.find()
+
+6) Find specific tutorial_id and author of respective tutorial
+db.Tutorial.find({tutorial_id: 3}, {tutorial_id: 1, author: 1, _id: 0})
+
+7) Display all records where author name starts with "Sa"
+db.Tutorial.find({author: /^Sa/})
+
+8) Display all tutorials in Ascending and Descending order by tutorial_id or author
+
+Ascending by tutorial_id:
+
+db.Tutorial.find().sort({tutorial_id: 1})
+
+Descending by tutorial_id:
+
+db.Tutorial.find().sort({tutorial_id: -1})
+
+Ascending by author name:
+
+db.Tutorial.find().sort({author: 1})
+
+
+Descending by author name:
+
+db.Tutorial.find().sort({author: -1})

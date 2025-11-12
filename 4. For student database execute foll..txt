@@ -1,0 +1,24 @@
+4. For student database execute following queries:
+- Find the record of the students who has got the highest marks in DBMS
+subject. - Find the average result of TOC subject. - Find the record of the students who has got the lowest marks in CNT subject.
+
+Step 1: Select Database
+use CollegeDB
+
+🧱 Step 2: Create and Insert Sample Data
+
+(Example data for testing)
+
+db.Student.insertMany([{roll_no: 1, name: "Omkar", subject: "DBMS", marks: 88}, {roll_no: 2, name: "Sakshi", subject: "DBMS", marks: 92}, {roll_no: 3, name: "Rohan", subject: "TOC", marks: 78}, {roll_no: 4, name: "Sneha", subject: "TOC", marks: 82}, {roll_no: 5, name: "Saurabh", subject: "CNT", marks: 69}, {roll_no: 6, name: "Pooja", subject: "CNT", marks: 74}])
+
+🔍 Queries:
+1️⃣ Find the record of the student who has got highest marks in DBMS
+db.Student.find({subject: "DBMS"}).sort({marks: -1}).limit(1)
+
+2️⃣ Find the average result of TOC subject
+db.Student.aggregate([{$match: {subject: "TOC"}}, {$group: {_id: "$subject", avg_marks: {$avg: "$marks"}}}])
+
+3️⃣ Find the record of the student who has got lowest marks in CNT
+db.Student.find({subject: "CNT"}).sort({marks: 1}).limit(1)
+
+db.Student.countDocuments({marks: {$gte: 60, $lte: 74}})

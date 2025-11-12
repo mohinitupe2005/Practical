@@ -1,0 +1,45 @@
+19. Create Instructor collection and execute following queries
+a. Delete details of instructor having salary < 30000
+b. Find instructors with either salary<50000 or deparment is computer
+c. Find out details of instructors who have salary==50000
+d. Find employee id, first name, along with salary where salary>50000
+
+
+Step 1: Create / Select Database
+use CollegeDB
+
+🧱 Step 2: Create Collection
+db.createCollection("Instructors")
+
+👨‍🏫 Step 3: Insert Sample Data (One by One)
+db.Instructors.insertOne({inst_id: 1, name: "Omkar", dept: "IT", salary: 28000})
+
+db.Instructors.insertOne({inst_id: 2, name: "Saurabh", dept: "Computer", salary: 50000})
+
+db.Instructors.insertOne({inst_id: 3, name: "Sneha", dept: "Mechanical", salary: 55000})
+
+db.Instructors.insertOne({inst_id: 4, name: "Rohan", dept: "Civil", salary: 47000})
+
+db.Instructors.insertOne({inst_id: 5, name: "Pooja", dept: "Computer", salary: 32000})
+
+🔍 Step 4: Execute Queries
+a️⃣ Delete details of instructors having salary < 30000
+db.Instructors.deleteMany({salary: {$lt: 30000}})
+
+
+✅ Explanation: Deletes all documents where salary is less than ₹30,000.
+
+b️⃣ Find instructors with either salary < 50000 OR department is “Computer”
+db.Instructors.find({$or: [{salary: {$lt: 50000}}, {dept: "Computer"}]})
+
+
+✅ Explanation: $or combines two conditions; retrieves records matching any one of them.
+
+c️⃣ Find details of instructors who have salary = 50000
+db.Instructors.find({salary: 50000})
+
+
+✅ Explanation: Simple equality condition on the salary field.
+
+d️⃣ Find employee id, name, and salary where salary > 50000
+db.Instructors.find({salary: {$gt: 50000}}, {inst_id: 1, name: 1, salary: 1, _id: 0})

@@ -1,0 +1,37 @@
+13. Createdatabase of 'restaurants' collection(Using mongodb)
+
+ To display the fields restaurant_id, name and cuisine for all the documents
+in the collection restaurant.  To find the restaurants that do not prepare any cuisine of 'London' and
+their grade score more than 70
+ to find the restaurant Id, name, and cuisine for those restaurants which
+contain 'esh' as last three letters for its name  To display all the documents in the collection restaurants. 
+
+Step 1: Create / Select Database
+use RestaurantDB
+
+🧱 Step 2: Create Collection
+db.createCollection("restaurants")
+
+🍽️ Step 3: Insert Sample Data (One by One)
+db.restaurants.insertOne({restaurant_id: 1, name: "Fresh Bites", cuisine: "Italian", city: "London", grade_score: 65})
+
+db.restaurants.insertOne({restaurant_id: 2, name: "Spicy Dish", cuisine: "Indian", city: "Mumbai", grade_score: 80})
+
+db.restaurants.insertOne({restaurant_id: 3, name: "Tasty Fresh", cuisine: "Chinese", city: "New York", grade_score: 90})
+
+db.restaurants.insertOne({restaurant_id: 4, name: "Delish", cuisine: "Continental", city: "Paris", grade_score: 75})
+
+db.restaurants.insertOne({restaurant_id: 5, name: "Golden Fish", cuisine: "Seafood", city: "London", grade_score: 85})
+
+🔍 Step 4: Execute Queries
+1️⃣ Display restaurant_id, name, and cuisine for all restaurants
+db.restaurants.find({}, {restaurant_id: 1, name: 1, cuisine: 1, _id: 0})
+
+2️⃣ Find restaurants that do not prepare cuisine of London and have grade_score > 70
+db.restaurants.find({city: {$ne: "London"}, grade_score: {$gt: 70}})
+
+3️⃣ Find restaurant_id, name, and cuisine where name ends with 'esh'
+db.restaurants.find({name: /esh$/}, {restaurant_id: 1, name: 1, cuisine: 1, _id: 0})
+
+4️⃣ Display all documents from the restaurants collection
+db.restaurants.find()

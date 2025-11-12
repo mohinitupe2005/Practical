@@ -1,0 +1,49 @@
+11. Implement the aggregation and indexing with suitable example in MongoDB.
+Demonstrate the following: Aggregation framework Create and drop different types
+of indexes and explain () to show the advantage of the indexes.
+
+
+Step 1: Create / Select Database
+use EmployeeDB
+
+🧱 Step 2: Create Collection & Insert Sample Data
+db.Employees.insertMany([
+  {emp_id: 1, name: "Omkar", dept: "IT", salary: 40000},
+  {emp_id: 2, name: "Sakshi", dept: "IT", salary: 50000},
+  {emp_id: 3, name: "Rohan", dept: "HR", salary: 30000},
+  {emp_id: 4, name: "Sneha", dept: "HR", salary: 45000},
+  {emp_id: 5, name: "Pooja", dept: "Finance", salary: 55000},
+  {emp_id: 6, name: "Saurabh", dept: "Finance", salary: 60000}
+])
+
+⚙️ (a) Aggregation Framework Demonstration
+1️⃣ Find average salary department-wise
+db.Employees.aggregate([{$group: {_id: "$dept", avg_salary: {$avg: "$salary"}}}])
+
+2️⃣ Find total salary expense per department
+db.Employees.aggregate([{$group: {_id: "$dept", total_salary: {$sum: "$salary"}}}])
+
+3️⃣ Count number of employees per department
+db.Employees.aggregate([{$group: {_id: "$dept", total_employees: {$sum: 1}}}])
+
+4️⃣ Find highest salary in each department
+db.Employees.aggregate([{$group: {_id: "$dept", max_salary: {$max: "$salary"}}}])
+
+⚡ (b) Indexing Demonstration
+5️⃣ Create an index on employee name
+db.Employees.createIndex({name: 1})
+
+6️⃣ Create an index on salary (descending order)
+db.Employees.createIndex({salary: -1})
+
+7️⃣ Create a compound index on department and salary
+db.Employees.createIndex({dept: 1, salary: -1})
+
+8️⃣ View all indexes created
+db.Employees.getIndexes()
+
+9️⃣ Drop a specific index (example: index on salary)
+db.Employees.dropIndex({salary: -1})
+
+🔟 Drop all indexes (except _id)
+db.Employees.dropIndexes()

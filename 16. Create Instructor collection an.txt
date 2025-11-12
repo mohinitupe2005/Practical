@@ -1,0 +1,39 @@
+16. Create Instructor collection and execute following queries
+a. Display the documents in ascending order
+b. Display the details of instructor whose first name is Saurabh
+c. Display first 5 documents of instructor collection
+d. Add one more phone to id 1 (AddtoSet )
+
+
+Step 1: Create / Select Database
+use CollegeDB
+
+🧱 Step 2: Create Collection
+db.createCollection("Instructors")
+
+👨‍🏫 Step 3: Insert Sample Data (One by One)
+db.Instructors.insertOne({inst_id: 1, name: "Omkar", dept: "IT", salary: 40000, phone: ["9876543210"]})
+
+db.Instructors.insertOne({inst_id: 2, name: "Saurabh", dept: "CSE", salary: 55000, phone: ["9123456789"]})
+
+db.Instructors.insertOne({inst_id: 3, name: "Sakshi", dept: "COMP", salary: 47000, phone: ["9998887776"]})
+
+db.Instructors.insertOne({inst_id: 4, name: "Sneha", dept: "IT", salary: 38000, phone: ["9865321478"]})
+
+db.Instructors.insertOne({inst_id: 5, name: "Rohan", dept: "ENTC", salary: 60000, phone: ["9745632109"]})
+
+🔍 Step 4: Execute Queries
+a️⃣ Display all instructor documents in ascending order of name
+db.Instructors.find().sort({name: 1})
+
+b️⃣ Display details of instructor whose first name is “Saurabh”
+db.Instructors.find({name: "Saurabh"})
+
+c️⃣ Display first 5 documents of instructor collection
+db.Instructors.find().limit(5)
+
+d️⃣ Add one more phone number to Instructor ID 1 using $addToSet
+
+(prevents duplicate entries in array)
+
+db.Instructors.updateOne({inst_id: 1}, {$addToSet: {phone: "9876501234"}})

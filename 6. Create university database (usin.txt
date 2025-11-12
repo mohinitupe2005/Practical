@@ -1,0 +1,35 @@
+6. Create university database (using mongodb)  Find the list of teachers in IT dept.  Find the list of teachers who have salary greater than 50000.  Find the teacher’s list in descending order.  Remove the teacher whose status is not approved.  Give the increment of rs.20000 who has salary less than 30000.
+
+
+Step 1: Select / Create Database
+use UniversityDB
+
+🧱 Step 2: Create Collection
+db.createCollection("Teachers")
+
+🧑‍🏫 Step 3: Insert Sample Data (One by One)
+db.Teachers.insertOne({t_id: 1, name: "Omkar", dept: "IT", salary: 28000, status: "approved"})
+
+db.Teachers.insertOne({t_id: 2, name: "Sakshi", dept: "IT", salary: 55000, status: "approved"})
+
+db.Teachers.insertOne({t_id: 3, name: "Rohan", dept: "CSE", salary: 48000, status: "approved"})
+
+db.Teachers.insertOne({t_id: 4, name: "Sneha", dept: "ENTC", salary: 60000, status: "approved"})
+
+db.Teachers.insertOne({t_id: 5, name: "Pooja", dept: "IT", salary: 25000, status: "not approved"})
+
+🔍 Queries
+1️⃣ Find the list of teachers in IT Department
+db.Teachers.find({dept: "IT"})
+
+2️⃣ Find the list of teachers who have salary greater than 50000
+db.Teachers.find({salary: {$gt: 50000}})
+
+3️⃣ Find the teacher’s list in descending order of salary
+db.Teachers.find().sort({salary: -1})
+
+4️⃣ Remove the teacher whose status is not approved
+db.Teachers.deleteMany({status: "not approved"})
+
+5️⃣ Give an increment of ₹20000 to teachers having salary less than 30000
+db.Teachers.updateMany({salary: {$lt: 30000}}, {$inc: {salary: 20000}})

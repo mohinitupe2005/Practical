@@ -1,0 +1,53 @@
+10. Execute at least 10 queries on any suitable MongoDB database that demonstrates
+following: a. $ where queries
+
+b. Cursors (Limits, skips, sorts, advanced query options)
+c. Database commands
+
+
+Step 1: Create / Select Database
+use EmployeeDB
+
+🧱 Step 2: Create Collection and Insert Sample Data
+db.Employees.insertMany([
+  {emp_id: 1, name: "Omkar", dept: "IT", salary: 25000, age: 25},
+  {emp_id: 2, name: "Sakshi", dept: "HR", salary: 52000, age: 28},
+  {emp_id: 3, name: "Rohan", dept: "Finance", salary: 48000, age: 32},
+  {emp_id: 4, name: "Sneha", dept: "IT", salary: 60000, age: 30},
+  {emp_id: 5, name: "Pooja", dept: "Sales", salary: 28000, age: 24},
+  {emp_id: 6, name: "Saurabh", dept: "IT", salary: 32000, age: 26}
+])
+
+🔍 Step 3: Execute 10 Queries
+🧩 (a) $where Queries
+1️⃣ Find employees where salary > 40000 (using $where)
+db.Employees.find({$where: "this.salary > 40000"})
+
+2️⃣ Find employees where age is greater than salary divided by 2000
+db.Employees.find({$where: "this.age > this.salary / 2000"})
+
+3️⃣ Find employees whose name starts with “S” using $where
+db.Employees.find({$where: "this.name.startsWith('S')"})
+
+🧭 (b) Cursors (Limit, Skip, Sort, Options)
+4️⃣ Display first 3 employees only (limit)
+db.Employees.find().limit(3)
+
+5️⃣ Skip first 2 records and display next ones (skip)
+db.Employees.find().skip(2)
+
+6️⃣ Sort employees by salary in descending order
+db.Employees.find().sort({salary: -1})
+
+7️⃣ Sort employees by department (ascending) and salary (descending)
+db.Employees.find().sort({dept: 1, salary: -1})
+
+8️⃣ Limit and sort combined – top 2 highest-paid employees
+db.Employees.find().sort({salary: -1}).limit(2)
+
+🧮 (c) Database Commands
+9️⃣ Show all collections in current database
+db.getCollectionNames()
+
+🔟 Check total number of documents in Employees collection
+db.Employees.countDocuments()

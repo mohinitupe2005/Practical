@@ -1,0 +1,47 @@
+18. Create Instructor collection and execute following queries
+
+a. Display details of instructor whose City has substring n
+b. Find details of instructor whose Dept has substring mec and h
+c. Find out instructor id, first name, department name along with salary
+where salary< 50000 and status is approved
+d. Find out details of instructors who have salary<30000
+
+
+Step 1: Create / Select Database
+use CollegeDB
+
+🧱 Step 2: Create Collection
+db.createCollection("Instructors")
+
+👨‍🏫 Step 3: Insert Sample Data (One by One)
+db.Instructors.insertOne({inst_id: 1, name: "Omkar", dept: "IT", city: "Pune", salary: 40000, status: "approved"})
+
+db.Instructors.insertOne({inst_id: 2, name: "Saurabh", dept: "Mechanical", city: "Nashik", salary: 48000, status: "approved"})
+
+db.Instructors.insertOne({inst_id: 3, name: "Sneha", dept: "Computer", city: "Mumbai", salary: 55000, status: "not approved"})
+
+db.Instructors.insertOne({inst_id: 4, name: "Rohan", dept: "Electrical", city: "Nagpur", salary: 28000, status: "approved"})
+
+db.Instructors.insertOne({inst_id: 5, name: "Sakshi", dept: "Civil", city: "Solapur", salary: 25000, status: "approved"})
+
+🔍 Step 4: Execute Queries
+a️⃣ Display details of instructors whose City has substring “n”
+db.Instructors.find({city: /n/i})
+
+
+✅ Explanation: /n/i → case-insensitive search for “n” in the city name.
+
+b️⃣ Find details of instructors whose Dept has substring “mec” and contains letter “h”
+db.Instructors.find({dept: /mec.*h/i})
+
+
+✅ Explanation: Regular expression matches departments containing both “mec” and “h” (e.g., “Mechanical”).
+
+c️⃣ Find inst_id, name, dept, salary where salary < 50000 and status = approved
+db.Instructors.find({salary: {$lt: 50000}, status: "approved"}, {inst_id: 1, name: 1, dept: 1, salary: 1, _id: 0})
+
+
+✅ Explanation: $lt → less than; projection {inst_id:1,...} → shows selected fields only.
+
+d️⃣ Find details of instructors who have salary < 30000
+db.Instructors.find({salary: {$lt: 30000}})

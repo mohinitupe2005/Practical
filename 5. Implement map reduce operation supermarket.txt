@@ -1,0 +1,32 @@
+5. Implement map reduce operation for super market.
+
+
+
+Step 1: Select Database
+use SuperMarketDB
+
+🧱 Step 2: Create Collection
+db.createCollection("Sales")
+
+🛒 Step 3: Insert Values One by One
+db.Sales.insertOne({item: "Apple", category: "Fruits", price: 100, quantity: 5})
+
+db.Sales.insertOne({item: "Banana", category: "Fruits", price: 50, quantity: 10})
+
+db.Sales.insertOne({item: "Milk", category: "Dairy", price: 60, quantity: 6})
+
+db.Sales.insertOne({item: "Cheese", category: "Dairy", price: 120, quantity: 2})
+
+db.Sales.insertOne({item: "Rice", category: "Grains", price: 80, quantity: 8})
+
+⚙️ Step 4: Define Map Function
+var mapFunction = function() { emit(this.category, this.price * this.quantity); }
+
+⚙️ Step 5: Define Reduce Function
+var reduceFunction = function(key, values) { return Array.sum(values); }
+
+🧮 Step 6: Execute MapReduce
+db.Sales.mapReduce(mapFunction, reduceFunction, {out: "CategorySales"})
+
+📋 Step 7: Display Result
+db.CategorySales.find()

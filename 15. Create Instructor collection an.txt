@@ -1,0 +1,35 @@
+15. Create Instructor collection and execute following queries
+a. Find out details of instructors working in IT department
+b. Find out details of instructors who have salary>40000
+c. Give count of inst in comp dept
+d. Give incrementof 10000 to instructor whose status is approved
+
+Step 1: Create / Select Database
+use CollegeDB
+
+🧱 Step 2: Create Collection
+db.createCollection("Instructors")
+
+👨‍🏫 Step 3: Insert Sample Data (One by One)
+db.Instructors.insertOne({inst_id: 1, name: "Omkar", dept: "IT", salary: 35000, status: "approved"})
+
+db.Instructors.insertOne({inst_id: 2, name: "Sakshi", dept: "CSE", salary: 48000, status: "approved"})
+
+db.Instructors.insertOne({inst_id: 3, name: "Rohan", dept: "COMP", salary: 42000, status: "approved"})
+
+db.Instructors.insertOne({inst_id: 4, name: "Sneha", dept: "IT", salary: 60000, status: "not approved"})
+
+db.Instructors.insertOne({inst_id: 5, name: "Pooja", dept: "COMP", salary: 30000, status: "approved"})
+
+🔍 Step 4: Execute Queries
+a️⃣ Find details of instructors working in IT department
+db.Instructors.find({dept: "IT"})
+
+b️⃣ Find details of instructors who have salary > 40000
+db.Instructors.find({salary: {$gt: 40000}})
+
+c️⃣ Count of instructors in COMP department
+db.Instructors.countDocuments({dept: "COMP"})
+
+d️⃣ Give increment of ₹10,000 to instructors whose status is approved
+db.Instructors.updateMany({status: "approved"}, {$inc: {salary: 10000}})

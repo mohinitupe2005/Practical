@@ -1,0 +1,18 @@
+2.Place an order of any five products from computer Shoppe like – keyboard,
+monitor mouse, printer, processor, switch, modem etc. and prepare a bill for the
+same.
+
+Step 1: Select or Create Database
+use ComputerShoppe
+
+🧾 Step 2: Create Collection
+db.createCollection("Orders")
+
+🛒 Step 3: Insert Order (Five Products)
+db.Orders.insertOne({order_id: 101, customer_name: "Omkar Biradar", order_date: "2025-11-08", items: [{product: "Keyboard", qty: 1, price: 800}, {product: "Monitor", qty: 1, price: 12000}, {product: "Mouse", qty: 2, price: 600}, {product: "Printer", qty: 1, price: 8500}, {product: "Processor", qty: 1, price: 15000}]})
+
+🧮 Step 4: Calculate Total Bill (Using Aggregation)
+db.Orders.aggregate([{$match: {order_id: 101}}, {$unwind: "$items"}, {$group: {_id: "$order_id", totalAmount: {$sum: {$multiply: ["$items.qty", "$items.price"]}}}}])
+
+📋 Step 5: Display the Complete Bill
+db.Orders.find({order_id: 101}, {_id: 0, customer_name: 1, order_date: 1, items: 1})
